@@ -8,7 +8,6 @@ from agnostic_model.models.pytorch_serve import PytorchModel
 class ChexNetPyTorch(PytorchModel):
     def __init__(self, weight_path, load_type):
         super(ChexNetPyTorch, self).__init__(weight_path, load_type)
-        print(self.model)
         
     def create_model(self):
         return DenseNet121(14)
@@ -41,12 +40,16 @@ class ChexNetPyTorch(PytorchModel):
     
     def process_result(self, n,  result):
         result = result.view(1, n, -1).mean(1)
+        print(result.data[0])
         ir , predicted = torch.max(result, 1)
         class_name = [ 'Atelectasis', 'Cardiomegaly', 'Effusion', 'Infiltration', 'Mass', 'Nodule', 'Pneumonia',
                 'Pneumothorax', 'Consolidation', 'Edema', 'Emphysema', 'Fibrosis', 'Pleural_Thickening', 'Hernia']
         print('Predicted: ', ' '.join('%5s' % class_name[predicted[j]] for j in range(1)))
-        self.result = result
-        return result
+        result_dict = {}
+
+        for i in range(0, len(class_name)-1):
+            result_dict[class_name[i]] = result.tolist()[0][i]
+        return result_dict
         
 
 class DenseNet121(nn.Module):
@@ -68,3 +71,6 @@ class DenseNet121(nn.Module):
     def forward(self, x):
         x = self.densenet121(x)
         return x
+
+#model = ChexNetPyTorch("model_new2.pth.tar", "full")
+#print(model.predict("text.jpg"))
