@@ -6,7 +6,7 @@ from PIL import Image
 from agnostic_model.models.pytorch_serve import PytorchModel
 
 class ChexNetPyTorch(PytorchModel):
-    def __init__(self, weight_path, load_type):
+    def __init__(self, weight_path="model_new2.pth.tar", load_type="full"):
         super(ChexNetPyTorch, self).__init__(weight_path, load_type)
         
     def create_model(self):
