@@ -1,7 +1,7 @@
 import sys 
+from agnostic_model.models.dense_ne import DenseNet121
 sys.path.append("..")
 from agnostic_model.agnostic_model import ModelAgnostic
-from agnostic_model.models.dense_ne import DenseNet121
 import torch
 from collections import OrderedDict
 class PytorchModel(ModelAgnostic):
@@ -14,17 +14,17 @@ class PytorchModel(ModelAgnostic):
         else:
             self.model = self.create_model()
 
-            checkpoint = torch.load(weight_path, map_location= lambda storage, loc: storage)
-            new_state_dict = OrderedDict()
-            if torch.cuda.device_count() < 1:
+            
+            if torch.cuda.device_count() < 1 and load_type == "cuda version":
+                checkpoint = torch.load(weight_path, map_location= lambda storage, loc: storage)
+                new_state_dict = OrderedDict()
                 for k, v in checkpoint['state_dict'].items():
                     k = k[7:] # remove `module.`
-                
                 self.model.load_state_dict(new_state_dict)
-              
-            else:
+            elif torch.cuda.device_count() >0 :
                 self.model = torch.nn.DataParallel(self.model)
-                self.model.load_state_dict(checkpoint['state_dict'])
+            else:
+                self.model.load_state_dict(torch.load(weight_path))
 
     def create_model(self):
         pass 

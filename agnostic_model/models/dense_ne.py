@@ -1,4 +1,5 @@
 import torch.nn as nn
+import torchvision
 class DenseNet121(nn.Module):
     """Model modified.
 

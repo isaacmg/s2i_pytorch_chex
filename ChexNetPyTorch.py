@@ -1,34 +1,16 @@
+from agnostic_model.models.dense_ne import DenseNet121
 import torch.nn as nn
 import torch
 import torchvision
 import torchvision.transforms as move
 from PIL import Image
 from agnostic_model.models.pytorch_serve import PytorchModel
-from agnostic_model.models.dense_ne import DenseNet121
-
-class DenseNet121(nn.Module):
-    """Model modified.
-
-    The architecture of our model is the same as standard DenseNet121
-    except the classifier layer which has an additional sigmoid function.
-
-    """
-    def __init__(self, out_size):
-        super(DenseNet121, self).__init__()
-        self.densenet121 = torchvision.models.densenet121(pretrained=True)
-        num_ftrs = self.densenet121.classifier.in_features
-        self.densenet121.classifier = nn.Sequential(
-            nn.Linear(num_ftrs, out_size),
-            nn.Sigmoid()
-        )
-
-    def forward(self, x):
-        x = self.densenet121(x)
-        return x
 
 class ChexNetPyTorch(PytorchModel):
-    def __init__(self, weight_path="model_new2.pth.tar", load_type="full"):
+    def __init__(self, weight_path="state_dic.pth.tar", load_type=""):
+        from agnostic_model.models.dense_ne import DenseNet121
         super(ChexNetPyTorch, self).__init__(weight_path, load_type)
+        #torch.save(self.model.state_dict(), "state_dic.pth.tar")
         
     def create_model(self):
         return DenseNet121(14)
