@@ -1,6 +1,7 @@
 import sys 
 sys.path.append("..")
 from agnostic_model.agnostic_model import ModelAgnostic
+from agnostic_model.models.dense_ne import DenseNet121
 import torch
 from collections import OrderedDict
 class PytorchModel(ModelAgnostic):
