@@ -3,8 +3,8 @@ import torch
 import torchvision
 import torchvision.transforms as move
 from PIL import Image
-from agnostic_model.models.pytorch_serve import PytorchModel
-from agnostic_model.models.dense_ne import DenseNet121
+from model_agnostic.models.pytorch_serve import PytorchModel
+from densenet.dense_ne import DenseNet121
 
 class DenseNet121(nn.Module):
     """Model modified.
@@ -28,6 +28,7 @@ class DenseNet121(nn.Module):
 
 class ChexNetPyTorch(PytorchModel):
     def __init__(self, weight_path="model_new2.pth.tar", load_type="full"):
+        DenseNet121(14)
         super(ChexNetPyTorch, self).__init__(weight_path, load_type)
         
     def create_model(self):
@@ -75,5 +76,5 @@ class ChexNetPyTorch(PytorchModel):
 
 
 
-#model = ChexNetPyTorch()
-#print(model.predict("text.jpg"))
+model = ChexNetPyTorch()
+print(model.predict("text.jpg"))
