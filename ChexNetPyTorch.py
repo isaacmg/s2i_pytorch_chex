@@ -4,7 +4,6 @@ import torch
 import torchvision
 import torchvision.transforms as move
 from PIL import Image
-<<<<<<< HEAD
 from model_agnostic.models.pytorch_serve import PytorchModel
 from densenet.dense_ne import DenseNet121
 
@@ -31,13 +30,11 @@ class DenseNet121(nn.Module):
 class ChexNetPyTorch(PytorchModel):
     def __init__(self, weight_path="model_new2.pth.tar", load_type="full"):
         DenseNet121(14)
-=======
+        
 from agnostic_model.models.pytorch_serve import PytorchModel
 
 class ChexNetPyTorch(PytorchModel):
     def __init__(self, weight_path="state_dic.pth.tar", load_type=""):
-        from agnostic_model.models.dense_ne import DenseNet121
->>>>>>> 6396d156435914832e84c431b7cbbc8809f619f8
         super(ChexNetPyTorch, self).__init__(weight_path, load_type)
         #torch.save(self.model.state_dict(), "state_dic.pth.tar")
         
