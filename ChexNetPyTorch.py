@@ -7,6 +7,7 @@ from PIL import Image
 from model_agnostic.models.pytorch_serve import PytorchModel
 from densenet.dense_ne import DenseNet121
 
+
 class DenseNet121(nn.Module):
     """Model modified.
 
@@ -26,12 +27,6 @@ class DenseNet121(nn.Module):
     def forward(self, x):
         x = self.densenet121(x)
         return x
-
-class ChexNetPyTorch(PytorchModel):
-    def __init__(self, weight_path="model_new2.pth.tar", load_type="full"):
-        DenseNet121(14)
-        
-from agnostic_model.models.pytorch_serve import PytorchModel
 
 class ChexNetPyTorch(PytorchModel):
     def __init__(self, weight_path="state_dic.pth.tar", load_type=""):
