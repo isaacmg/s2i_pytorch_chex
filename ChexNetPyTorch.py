@@ -1,10 +1,10 @@
-from agnostic_model.models.dense_ne import DenseNet121
+from densenet.dense_ne import DenseNet121
 import torch.nn as nn
 import torch
 import torchvision
 import torchvision.transforms as move
 from PIL import Image
-from model_agnostic.models.pytorch_serve import PytorchModel
+from pytorch_serve_test import PytorchModel
 from densenet.dense_ne import DenseNet121
 
 
@@ -77,6 +77,5 @@ class ChexNetPyTorch(PytorchModel):
         
 
 
-
-model = ChexNetPyTorch()
-print(model.predict("text.jpg"))
+#model = ChexNetPyTorch()
+#print(model.predict("text.jpg"))
