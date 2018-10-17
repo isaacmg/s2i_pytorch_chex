@@ -6,6 +6,7 @@ import torch.onnx
 import onnx
 import onnx_caffe2.backend
 from ChexNetPyTorch import ChexNetPyTorch
+import json 
 def export_model():
     the_model_class = ChexNetPyTorch()
     garbage, model_inputs = the_model_class.preprocessing("text.jpg")
@@ -17,11 +18,13 @@ def export_model():
 def test_model_export():
     # TODO refactor messy shit
     model = onnx.load("model_weights/chexnet-py.onnx")
+    print("name below")
+    print(model.graph.input)
     the_model_class = ChexNetPyTorch()
     garbage, model_inputs = the_model_class.preprocessing("text.jpg")
     prepared_backend = onnx_caffe2.backend.prepare(model)
     W = {model.graph.input[0].name: model_inputs.numpy()}
     c2_out = prepared_backend.run(W)[0]
     return c2_out
-export_model()
-print(test_model_export())
+#export_model()
+#print(test_model_export())
