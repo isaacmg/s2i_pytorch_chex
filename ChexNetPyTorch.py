@@ -31,12 +31,14 @@ class DenseNet121(nn.Module):
 class ChexNetPyTorch(PytorchModel):
     def __init__(self, weight_path="state_dic.pth.tar", load_type=""):
         super(ChexNetPyTorch, self).__init__(weight_path, load_type)
+        self.model.train(False)                
         #torch.save(self.model.state_dict(), "state_dic.pth.tar")
         
     def create_model(self):
         return DenseNet121(14)
         
     def preprocessing(self, image_path):
+
         """ """
         image = Image.open(image_path)
         normalize = move.Normalize([0.485, 0.456, 0.406],
@@ -55,20 +57,22 @@ class ChexNetPyTorch(PytorchModel):
         
         return n_crops, torch.autograd.Variable(image.float(), volatile=True)
         
-    
+     
     def predict(self, non_formatted_data):
         """Overide for compatibility with Seldon Core S2I"""
         n_crops, formatted_data = self.preprocessing(non_formatted_data)
+        print(n_crops)
         result = self.model(formatted_data)
         return self.process_result(n_crops, result)
     
     def process_result(self, n,  result):
+        print(result)
         result = result.view(1, n, -1).mean(1)
-        print(result.data[0])
+        #print(result.data[0])
         ir , predicted = torch.max(result, 1)
         class_name = [ 'Atelectasis', 'Cardiomegaly', 'Effusion', 'Infiltration', 'Mass', 'Nodule', 'Pneumonia',
                 'Pneumothorax', 'Consolidation', 'Edema', 'Emphysema', 'Fibrosis', 'Pleural_Thickening', 'Hernia']
-        print('Predicted: ', ' '.join('%5s' % class_name[predicted[j]] for j in range(1)))
+        #print('Predicted: ', ' '.join('%5s' % class_name[predicted[j]] for j in range(1)))
         result_dict = {}
 
         for i in range(0, len(class_name)-1):
@@ -77,5 +81,5 @@ class ChexNetPyTorch(PytorchModel):
         
 
 
-#model = ChexNetPyTorch()
-#print(model.predict("text.jpg"))
+model = ChexNetPyTorch()
+print(model.predict("text.jpg"))
