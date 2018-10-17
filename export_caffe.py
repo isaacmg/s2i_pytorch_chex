@@ -28,5 +28,5 @@ def test_model_export():
     return c2_out
 export_model()
 torch_out = export_model()
-#np.testing.assert_almost_equal(torch_out.data.cpu().numpy(), test_model_export(), decimal=3)
+np.testing.assert_almost_equal(torch_out.data.cpu().numpy(), test_model_export(), decimal=3)
 #print(torch_out.data.cpu().numpy())

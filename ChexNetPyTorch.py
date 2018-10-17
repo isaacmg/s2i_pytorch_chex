@@ -81,5 +81,5 @@ class ChexNetPyTorch(PytorchModel):
         
 
 
-model = ChexNetPyTorch()
-print(model.predict("text.jpg"))
+#model = ChexNetPyTorch()
+#print(model.predict("text.jpg"))
